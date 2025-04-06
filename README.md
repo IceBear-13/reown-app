@@ -48,9 +48,9 @@ The project consists of two main parts:
    ALCHEMY_API_KEY="your_alchemy_api_key"
    ```
 4.Start the development server:
-   ```bash
-   npm run dev
-   ```
+      ```bash
+      npm run dev
+      ```
 5. Run the server:
    ```bash
    npm run seq
