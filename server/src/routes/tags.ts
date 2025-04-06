@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { supabaseAdmin } from "../db/config";
 
-const tagsRouter = Router();
+export const tagsRouter = Router();
 
 tagsRouter.post("/", async (req: Request, res: Response) => {
   const { hashes, message } = req.body;
@@ -30,4 +30,4 @@ tagsRouter.get('/:address', async (req: Request, res: Response) => {
 
 })
 
-export default tagsRouter;
+
