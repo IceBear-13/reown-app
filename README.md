@@ -30,7 +30,7 @@ The project consists of two main parts:
 
 ### Installation
 
-#### Backend Setup
+## Backend Setup
 
 1. Navigate to the server directory:
    ```bash
@@ -56,36 +56,36 @@ The project consists of two main parts:
    npm run seq
    ```
 
-#### Frontend Setup
+## Frontend Setup
 
-## Real-time Transaction Streaming
+### Real-time Transaction Streaming
 The application uses a streaming approach to fetch and display transactions:
 - The backend streams transaction data from Etherscan/Alchemy APIs
 - Frontend processes the incoming chunks in real-time
 - Transactions appear on the UI as they are received
 - Each new transaction triggers a re-render of the transaction list
 
-## Wallet Connection
+### Wallet Connection
 - Integration with WalletConnect for secure wallet connectivity
 - Support for multiple Ethereum wallets
 - Automatic loading of transactions when wallet is connected
 
-## Transaction Display
+### Transaction Display
 - Clean, responsive UI showing important transaction details
 - Formatting of addresses and ETH values
 - Status indicators for successful and failed transactions
 - Timestamps in user-friendly format
 
-## Technology Stack
+### Technology Stack
 
-# Frontend
+## Frontend
 - React with TypeScript
 - Vite for build tooling
 - Wagmi for wallet connection
 - Axios for API communication
 - React Query for data fetching
 
-# Backend
+## Backend
 - Express.js with TypeScript
 - Etherscan & Alchemy APIs for blockchain data
 - Supabase for database storage
