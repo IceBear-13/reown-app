@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { TransactionRouter } from "./transaction";
-import tagsRouter from "./tags";
+import { tagsRouter } from "./tags";
 
 const router = Router();
 
