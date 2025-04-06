@@ -1,0 +1,247 @@
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+header h1 {
+  margin: 0;
+  color: #333;
+}
+
+.wallet-connection {
+  display: flex;
+  align-items: center;
+}
+
+.wallet-connection .address {
+  background-color: #f5f5f5;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-right: 10px;
+  font-family: monospace;
+  color: black;
+}
+
+button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+
+button:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}
+
+.connect-prompt {
+  text-align: center;
+  margin: 50px 0;
+  padding: 30px;
+  border-radius: 8px;
+  border: 1px dashed #d1d5db;
+}
+
+.loading, .error {
+  text-align: center;
+  margin: 30px 0;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.loading {
+  background-color: #f3f4f6;
+}
+
+.error {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Transaction List Styles */
+.transaction-list {
+  margin-top: 20px;
+}
+
+.transaction-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.transaction-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.tx-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.tx-hash {
+  font-family: monospace;
+  color: #4b5563;
+}
+
+.tx-timestamp {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.tx-addresses {
+  margin-bottom: 10px;
+}
+
+.tx-from, .tx-to {
+  margin-bottom: 5px;
+}
+
+.tagged-address {
+  background-color: #e0f2fe;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #0369a1;
+  font-weight: 500;
+}
+
+.tx-value {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 10px 0;
+  color: #059669;
+}
+
+.tx-status {
+  font-size: 0.9rem;
+}
+
+.tx-status .success {
+  color: #10b981;
+}
+
+.tx-status .failed {
+  color: #ef4444;
+}
+
+.no-transactions {
+  text-align: center;
+  padding: 30px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px dashed #d1d5db;
+}
+
+/* Tagging System Styles */
+.tagging-system {
+  background-color: #f9fafb;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.tagging-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.tagging-header h3 {
+  margin: 0;
+  color: #4b5563;
+}
+
+.toggle-tags-btn {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.tags-list {
+  margin-bottom: 20px;
+}
+
+.tags-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tags-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+}
+
+.tag-name {
+  font-weight: 600;
+  margin-right: 10px;
+  color: #0369a1;
+}
+
+.tag-address {
+  font-family: monospace;
+  color: #6b7280;
+}
+
+.tag-form {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  gap: 15px;
+  align-items: end;
+}
+
+@media (max-width: 768px) {
+  .tag-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.form-group input {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
