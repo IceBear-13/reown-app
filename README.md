@@ -91,12 +91,5 @@ The application uses a streaming approach to fetch and display transactions:
 - Supabase for database storage
 - Socket.IO for real-time communication
 
-## Future Improvements
-- Add transaction filtering and sorting
-- Implement pagination for large transaction histories
-- Add support for other blockchain networks
-- Enhance the tagging system with more features
-- Improve error handling and retry mechanisms
-
 ## License
 This README provides a comprehensive overview of the Reown Transaction Explorer project, including setup instructions, features, and the technology stack. It explains how the application works with real-time transaction streaming, wallet connections, and the display of transaction data. The document also includes possible future improvements to guide ongoing development.
