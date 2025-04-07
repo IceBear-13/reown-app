@@ -5,10 +5,37 @@ import { EtherscanResponse, EtherscanTransaction, getAddressTransactions } from 
 
 export const TransactionRouter = Router();
 
+/**
+ * @swagger
+ * /transactions/{address}:
+ *   get:
+ *     summary: Get transactions for a specific Ethereum address
+ *     tags: [Transactions]
+ *     parameters:
+ *       - in: path
+ *         name: address
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Ethereum wallet address
+ *     responses:
+ *       200:
+ *         description: List of transactions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Transaction'
+ *       400:
+ *         description: Invalid address format or missing address
+ *       500:
+ *         description: Server error
+ */
+
 TransactionRouter.get('/:address', async (req: Request, res: Response) => {
   const { address } = req.params;
   
-  // 1. Validate all inputs before sending any response
   if (!address || address === '') {
     res.status(400).json({ error: "Address must be provided" });
     return;
@@ -99,3 +126,32 @@ TransactionRouter.get('/:address', async (req: Request, res: Response) => {
     }
   }
 });
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Transaction:
+ *       type: object
+ *       properties:
+ *         blockNumber:
+ *           type: string
+ *         timeStamp:
+ *           type: string
+ *         hash:
+ *           type: string
+ *         from:
+ *           type: string
+ *         to:
+ *           type: string
+ *         value:
+ *           type: string
+ *         gas:
+ *           type: string
+ *         gasPrice:
+ *           type: string
+ *         isError:
+ *           type: string
+ *         txreceipt_status:
+ *           type: string
+ */

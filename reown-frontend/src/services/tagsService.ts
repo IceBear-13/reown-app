@@ -6,7 +6,7 @@ export const tagsRename = async (hash: string, tags: string) => {
   try{
     const options = {
       method: 'POST',
-      url: `http://localhost:3000/tags`,
+      url: `${BASE_URL}/tags`,
       headers: {
         'Content-Type': 'application/json' 
       },
@@ -28,7 +28,7 @@ export const tagsRename = async (hash: string, tags: string) => {
 export const fetchTags = async (hash: string): Promise<string> => {
   const options = {
     method: 'GET',
-    url: `http://localhost:3000/tags/${hash}`
+    url: `${BASE_URL}/tags/${hash}`
   }
   try{
     const response = await axios.request(options);
