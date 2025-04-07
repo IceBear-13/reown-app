@@ -1,16 +1,31 @@
-// components/TransactionList.tsx
-import React from 'react';
+import React, { ReactEventHandler, useEffect, useState } from 'react';
 import { Transaction } from '../types';
+import { fetchTags, tagsRename } from '../services/tagsService';
 
 interface TransactionListProps {
   transactions: Transaction[];
   addressTags: Record<string, string>;
 }
 
-export const TransactionList: React.FC<TransactionListProps> = ({ 
-  transactions, 
-  addressTags 
-}) => {
+export const TransactionList: React.FC<TransactionListProps> = ({ transactions, addressTags }) => {
+
+  useEffect(() => {
+    const fetchTag = async (hash: string) => {
+      const response = await fetchTags(hash);
+      setTransactionTag(response);
+    };
+
+    transactions.forEach((transaction) => fetchTag(transaction.hash));
+  }, [])
+
+  const handleChangeTag = async (hash: string, message: string) => {
+    const response = await tagsRename(hash, message)
+    console.log(response);
+    return response;
+  } 
+
+  const [transactionTag, setTransactionTag] = useState("");
+
   if (transactions.length === 0) {
     return <div className="no-transactions">No transactions found</div>;
   }
@@ -53,6 +68,25 @@ export const TransactionList: React.FC<TransactionListProps> = ({
           </div>
           
           <div className="tx-value">{formatValue(tx.value)}</div>
+          <div>
+            <h3>Transaction's tag: {transactionTag}</h3>
+            <label htmlFor="tag">Change transaction's tag</label>
+            <br />
+            <input type="text" id="tag"></input>
+            <br />
+            <button id='change-tag' onClick={(e) => {
+              const tagInput = document.getElementById('tag') as HTMLInputElement;
+                handleChangeTag(tx.hash, tagInput.value)
+                .then(response => {
+                  if (response) {
+                  setTransactionTag(tagInput.value);
+                  tagInput.value = '';
+                  }
+                })
+                .catch(error => console.error('Failed to update tag:', error));
+
+            }}>Submit</button>
+          </div>
           
           <div className="tx-status">
             Status: <span className={tx.status ? 'success' : 'failed'}>

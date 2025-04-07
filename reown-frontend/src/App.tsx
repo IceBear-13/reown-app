@@ -12,12 +12,9 @@ function App() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(false)
   const [fetchError, setFetchError] = useState<string | null>(null)
-  // To force re-render of transaction list when new data arrives
   const [transactionListKey, setTransactionListKey] = useState(0)
   
-  const addressTags: Record<string, string> = {
-    "": ""
-  }
+  const addressTags: Record<string, string> = {}
 
   useEffect(() => {
     const fetchTransaction = async () => {
@@ -27,16 +24,12 @@ function App() {
         setTransactions([]);
         
         try {
-          // Pass a callback function to handle each new transaction as it arrives
           await getTransactions(
             account.addresses[0].toLowerCase(),
             (newTransaction) => {
               setTransactions(prev => {
-                // Check if this transaction is already in our array
                 if (!prev.find(tx => tx.hash === newTransaction.hash)) {
-                  // Force a re-render of the TransactionList component
                   setTransactionListKey(prevKey => prevKey + 1);
-                  // Add new transaction to the array
                   return [...prev, newTransaction];
                 }
                 return prev;
@@ -51,7 +44,6 @@ function App() {
           setLoading(false);
         }
       } else {
-        // Reset transactions when disconnected
         setTransactions([]);
       }
     };
@@ -62,7 +54,7 @@ function App() {
   return (
     <div className="app-container">
       <header>
-        <h1>Reown Transaction Explorer</h1>
+        <h1 className="title">Reown Transaction Explorer</h1>
         <div className="wallet-connection">
           {account.status === 'connected' && account.addresses && (
             <span className="address">

@@ -53,6 +53,10 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.title {
+  color: white;
+}
+
 .connect-prompt {
   text-align: center;
   margin: 50px 0;
@@ -80,6 +84,7 @@ button:disabled {
 /* Transaction List Styles */
 .transaction-list {
   margin-top: 20px;
+  color: black;
 }
 
 .transaction-card {

@@ -8,10 +8,8 @@ export const getTransactions = async (
   onDataChunk: (chunk: Transaction) => void
 ): Promise<Transaction[]> => {
   try {
-    // Create a temporary array to store all transactions
     const allTransactions: Transaction[] = [];
     
-    // Make a request with responseType: 'stream'
     const response = await axios.get(`${BASE_URL}/transactions/${address}`, {
       responseType: 'text',
       headers: {
@@ -21,13 +19,11 @@ export const getTransactions = async (
         const text = progressEvent.event.target.responseText;
         if (!text) return;
         
-        // Process only the new data since last update
         const jsonObjects = text.split(',\n');
         
         for (const jsonStr of jsonObjects) {
           if (jsonStr.trim() && !jsonStr.includes('"error":')) {
             try {
-              // Clean the JSON string (remove any brackets and extra chars)
               let cleanJsonStr = jsonStr.trim();
               if (cleanJsonStr.startsWith('[')) {
                 cleanJsonStr = cleanJsonStr.substring(1);

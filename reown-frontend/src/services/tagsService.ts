@@ -6,13 +6,13 @@ export const tagsRename = async (hash: string, tags: string) => {
   try{
     const options = {
       method: 'POST',
-      url: `${BASE_URL}/tags`,
+      url: `http://localhost:3000/tags`,
       headers: {
         'Content-Type': 'application/json' 
       },
       data: {
         hash: hash,
-        messages: tags,
+        message: tags,
       }
     };
     const response = await axios.request(options);
@@ -21,6 +21,20 @@ export const tagsRename = async (hash: string, tags: string) => {
 
   } catch(error){
     console.error(error);
-    return;
+    return "Error";
+  }
+}
+
+export const fetchTags = async (hash: string): Promise<string> => {
+  const options = {
+    method: 'GET',
+    url: `http://localhost:3000/tags/${hash}`
+  }
+  try{
+    const response = await axios.request(options);
+    return response.data.message;
+  } catch(error){
+    console.log(error);
+    return "Error";
   }
 }

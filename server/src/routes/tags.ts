@@ -12,8 +12,8 @@ tagsRouter.post("/", async (req: Request, res: Response) => {
   try {
     const { error: updateError } = await supabaseAdmin
       .from("transactions")
-      .update("tag", message)
-      .eq("hash", hash);
+      .update({ tag: message })
+      .eq("transaction_id", hash);
 
     if (updateError) {
       res.status(500).json({ error: updateError });

@@ -46,7 +46,7 @@ export const getAddressTransactions = async (
   page: number = 1,
   offset: number = 10,
   sort: 'asc' | 'desc' = 'desc'
-): Promise<EtherscanTransaction[]> => {
+): Promise<EtherscanResponse> => {
   try {
     const baseUrl = 'https://api.etherscan.io/api';
     const response = await axios.get<EtherscanResponse>(baseUrl, {
@@ -67,7 +67,7 @@ export const getAddressTransactions = async (
       throw new Error(`Etherscan API error: ${response.data.message}, ${response.data.result}`);
     }
 
-    return response.data.result;
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(`Request failed: ${error.message}`);
