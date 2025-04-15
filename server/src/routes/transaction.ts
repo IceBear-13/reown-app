@@ -47,6 +47,7 @@ TransactionRouter.get('/:address', async (req: Request, res: Response) => {
   }
 
   try {
+    // User handling logic (keeping your existing code)
     const { data: existingUser, error: userQueryError } = await supabaseAdmin
       .from('users')
       .select('wallet_address')
@@ -76,43 +77,59 @@ TransactionRouter.get('/:address', async (req: Request, res: Response) => {
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
     
-    res.write('[');
+    // Start the JSON array
+    res.write('[\n');
     let isFirstTransaction = true;
     
+    let hasTransactions = false;
+    
+    // Fetch transactions from multiple pages
     for (let i = 1; i <= 10; i++) {
-      const transactions: EtherscanResponse = await getAddressTransactions(address, 0, 99999999, i);
-      if(transactions.status !== "1"){
-        break;
-      }
-      
-      for (const tx of transactions.result) {
-        try {
-          const { error: insertionError } = await supabaseAdmin
-            .from('transactions')
-            .insert({
-              wallet_address: address,
-              transaction_id: tx.hash,
-            });
-          
-          if (insertionError) {
-            console.error(`Error inserting transaction ${tx.hash}:`, insertionError);
-          }
-          
-          if (!isFirstTransaction) {
-            res.write(',\n');
-          } else {
-            isFirstTransaction = false;
-          }
-          res.write(JSON.stringify(tx));
-          
-        } catch (txError) {
-          console.error(`Error processing transaction ${tx.hash}:`, txError);
+      try {
+        const transactions: EtherscanResponse = await getAddressTransactions(address, 0, 99999999, i);
+        
+        if (transactions.status !== "1") {
+          console.log(`No more transactions or API error on page ${i}`);
+          break;
         }
+        
+        if (transactions.result.length === 0) {
+          console.log(`No transactions on page ${i}`);
+          break;
+        }
+        
+        for (const tx of transactions.result) {
+          try {
+
+            await supabaseAdmin
+              .from('transactions')
+              .upsert({
+                wallet_address: address,
+                transaction_id: tx.hash,
+              }, { onConflict: 'wallet_address,transaction_id' });
+
+            if (!isFirstTransaction) {
+              res.write(',\n');
+            } else {
+              isFirstTransaction = false;
+            }
+            
+            res.write(JSON.stringify(tx));
+            hasTransactions = true;
+            
+          } catch (txError) {
+            console.error(`Error processing transaction ${tx.hash}:`, txError);
+          }
+        }
+      } catch (pageError) {
+        console.error(`Error fetching page ${i} of transactions:`, pageError);
       }
     }
-
+    
     res.write('\n]');
     res.end();
+    
+    console.log(`Successfully streamed transactions for address ${address}`);
     
   } catch (error) {
     console.error(`Error processing transactions for ${address}:`, error);
@@ -121,8 +138,12 @@ TransactionRouter.get('/:address', async (req: Request, res: Response) => {
       res.status(500).json({ error: 'Failed to fetch transactions' });
       return;
     } else {
-      res.write(`\n{"error": "Failed to complete transaction stream"}\n]`);
-      res.end();
+      try {
+        res.write('\n]');
+        res.end();
+      } catch (closeError) {
+        console.error('Error while trying to close the response:', closeError);
+      }
     }
   }
 });

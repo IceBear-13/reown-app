@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { getTransactions } from './services/transactionService'
 import './App.css'
@@ -14,6 +14,9 @@ function App() {
   const [fetchError, setFetchError] = useState<string | null>(null)
   const [transactionListKey, setTransactionListKey] = useState(0)
   
+  // For logging purposes - keep track of how many transactions we've received
+  const transactionCountRef = useRef(0)
+  
   const addressTags: Record<string, string> = {}
 
   useEffect(() => {
@@ -23,19 +26,32 @@ function App() {
         setFetchError(null);
         setTransactions([]);
         
+        // Reset the transaction counter
+        transactionCountRef.current = 0;
+        
+        // Log the wallet address we're fetching transactions for
+        console.log("Fetching transactions for address:", account.addresses[0].toLowerCase());
+        
         try {
           await getTransactions(
             account.addresses[0].toLowerCase(),
             (newTransaction) => {
               setTransactions(prev => {
                 if (!prev.find(tx => tx.hash === newTransaction.hash)) {
+                  transactionCountRef.current += 1;
+                  
                   setTransactionListKey(prevKey => prevKey + 1);
-                  return [...prev, newTransaction];
+                  
+                  const newTransactions = [...prev, newTransaction];
+                  
+                  return newTransactions;
                 }
                 return prev;
               });
             }
           );
+          
+          console.log("Transaction fetch completed");
         } catch (error) {
           console.error("Error fetching transactions:", error);
           setFetchError("Failed to load transactions. Please try again.");
@@ -50,6 +66,13 @@ function App() {
     
     fetchTransaction();
   }, [account.status, account.addresses]);
+
+  useEffect(() => {
+    if (transactions.length > 0) {
+      console.log("Current transactions state:", transactions);
+      console.log("Transaction count in state:", transactions.length);
+    }
+  }, [transactions]);
 
   return (
     <div className="app-container">
@@ -108,6 +131,7 @@ function App() {
 
       {status === 'pending' && <div className="loading">Connecting...</div>}
       {error && <div className="error">{error.message}</div>}
+      
     </div>
   )
 }
